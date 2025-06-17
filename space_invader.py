@@ -1,3 +1,4 @@
+import sys
 import pygame
 import random
 import math
@@ -36,14 +37,14 @@ cometX = []
 cometY = []
 cometXchange = []
 cometYchange = []
-num_of_comets = 20
+num_of_comets = 10
 # loop for more comets
 for i in range(num_of_comets):
     cometimg.append(pygame.image.load("comet.png"))
-    cometX.append(random.randint(0,735))
-    cometY.append(random.randint(50,100))
-    cometXchange.append(1)
-    cometYchange.append(40)
+    cometX.append(random.randint(1,790))
+    cometY.append(random.randint(10,57))
+    cometXchange.append(0.2)
+    cometYchange.append(0.1)
 
 # bullet
 bulletimg = pygame.image.load("bullet.png")
@@ -70,7 +71,7 @@ def show_score(x,y):
 # Game over
 def game_over_text(x,y):
     over = over_font.render("Game Over ", True, (255,255,255))
-    screen.blit(over, (x,y))
+    screen.blit(over, (x,y))              
 
 def player(x,y):
     screen.blit(playerimg,(x, y))  #.blit() means to draw(has 2 paramerts(img, (x,ycoordinates)))
@@ -84,8 +85,8 @@ def fire_bullet(x,y):
     screen.blit(bulletimg, (x +16, y +10))
 #  collision
 def isCollision(cometX, cometY, bulletX, bulletY):
-    distance = math.sqrt((math.pow(cometX - bulletX, 2)) + (math.pow(cometY-bulletY, 2)))
-    if distance < 22:
+    distance = math.sqrt(math.pow((cometX - bulletX), 2) + math.pow((cometY - bulletY), 2))
+    if distance < 20:
         return True
     else:
         return False
@@ -117,7 +118,9 @@ while running:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
-                
+    
+                        
+                               
 
     # shooter appearance
     playerX += playerX_change
@@ -133,9 +136,8 @@ while running:
         if cometY[i] > 460:
             for j in range(num_of_comets):
                 cometY[j] = 2000
-            game_over_text(150,250)        
-            
-        cometX[i] += cometXchange[i]
+            game_over_text(150,250)
+        cometY[i] += cometYchange[i]
         # movement of comet
         if cometX[i] <= 0:
             cometXchange[i] = 0.3
@@ -167,5 +169,6 @@ while running:
     show_score(textX, textY)
     
     pygame.display.update()
+
 
     
